@@ -6,6 +6,8 @@
  *     ListNode(int x) { val = x; }
  * }
  */
+ 
+ //十个链表题九个用双指针
 class Solution {
     public boolean isPalindrome(ListNode head) {
         ListNode fast = head;
