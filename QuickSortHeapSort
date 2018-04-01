@@ -1,0 +1,98 @@
+#include <iostream>
+int A[] = {0,99,5,36,7,22,17,46,12,2,19,25,28,1,92};
+int n = 14 ;
+void quicksort( int left, int right){
+    if(left > right) return;  //这里是递归出口
+
+    //分割
+    int base = A[left];  //基准元素
+    int i = left;
+    int j = right;  //这里定义两个哨兵
+    while(i!= j)    //当两个哨兵没相遇的话
+    {
+        while(A[j] >= base && j>i)
+            j--;
+        while(A[i] <= base && i<j)
+            i++;
+        int tmp = A[i];
+        A[i] = A[j];
+        A[j] = tmp;
+
+    }
+
+    //哨兵相遇了，就应该交换哨兵元素和基准元素
+    int tmp = A[i];
+    A[i] = base;
+    A[left] = tmp;
+    //至此，base左边的元素都小于base，base右边的元素都大于base
+
+    quicksort(left,i-1);
+    quicksort(i+1,right);
+}
+void swap(int i,int j)  //交换数组中两个元素的函数
+{
+    int tmp = A[i];
+    A[i] = A[j];
+    A[j] = tmp;
+}
+
+void siftdown(int i)//调整函数 //传入一个需要向下调整的结点编号i，这里传入1，即从堆的顶点开始向下调整
+{
+    int t,flag = 0;
+    while(2*i <= n && flag == 0)
+    {
+        if(A[i] < A[2*i])
+        {
+            t = 2*i;
+        }
+        else t = i;
+        if(2*i + 1 <= n)
+        {
+            if(A[2*i+1] > A[t])
+            {
+                t = 2*i+1;
+            }
+        }
+        if(t!=i)
+        {
+            swap(i,t);
+            i=t;//更新i为刚才与它交换的儿子结点的编号，便于接下来继续向下调整
+        }
+        else
+        {
+            flag = 1; //否则说明当前的父结点已经比两个子结点都要大了，不需要在进行调整了
+        }
+    }
+}
+
+void create()
+{
+    //从最后一个非叶结点到第1个结点依次进行向上调整
+    for(int i = n/2;i >=1;i--)
+    {
+        siftdown(i);
+    }
+}
+
+
+void heapsort()  //排序函数
+{
+    while(n > 1)
+    {
+        swap(1,n);
+        n--;
+        siftdown(1);
+    }
+}
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+
+    //quicksort(0,9);
+    create();
+    heapsort();
+    for(int i = 1; i <= 14; i++)
+    {
+        std::cout<<A[i]<<std::endl;
+    }
+    return 0;
+}
