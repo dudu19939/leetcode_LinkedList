@@ -1,0 +1,71 @@
+/* Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+    push(x) -- Push element x onto stack.
+    pop() -- Removes the element on top of the stack.
+    top() -- Get the top element.
+    getMin() -- Retrieve the minimum element in the stack.
+*/
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    vector<int> vec;
+    int min;
+    int length;
+    MinStack() {
+        length = 0;
+        min = INT_MAX;
+    }
+    
+    void push(int x) {
+        if(x<min)
+        min = x;
+        length++;
+        vec.push_back(x);
+    }
+    
+    void pop() {
+        if(vec.size() == 1)   //注意这里要判断是否栈中只剩下一个元素，如果是，需要将min修改为INT_MAX
+        {
+            min = INT_MAX;
+            length = 0;
+            vec.pop_back();
+            return;
+        }
+        if(vec[length-1] == min)        
+        {
+            length--;
+            vec.pop_back();
+            min = vec[0];
+            for(int i=1;i < length; i++)
+            {
+                if(vec[i] < min)
+                    min = vec[i];
+                
+            }
+            
+        }
+        else
+        {
+            length--;
+            vec.pop_back();
+        }
+        
+    }
+    
+    int top() {
+        return vec[vec.size()-1];
+    }
+    
+    int getMin() {
+        return min;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
